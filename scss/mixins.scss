@@ -1,0 +1,18 @@
+@mixin createColorScale($color, $name, $modifier: 0.9, ) {
+    $modifier: 0.9;
+    $length: calc(list.length($grades) * $modifier);
+    $prefix: --#{$name};
+    #{$prefix}: $color;
+
+    @each $grade in $grades {
+        $i: index($grades, $grade);
+
+        @if $i <=calc($length / 2) {
+            #{$prefix}-#{$grade}: #{lighten($color, calc($length / 2 * 10 - $i * $length))};
+        }
+
+        @else {
+            #{$prefix}-#{$grade}: #{darken($color, calc(calc($i - $length / 2) * 10))};
+        }
+    }
+}

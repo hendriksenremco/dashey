@@ -1,0 +1,153 @@
+<template>
+  <div class="grid-stack">
+    <div
+      v-for="savedItem in saved"
+      :id="savedItem.id"
+      :key="savedItem.id"
+      class="grid-stack-item ui-resizable"
+      :gs-id="savedItem.id"
+      :gs-min-w="savedItem.minW"
+      :gs-min-h="savedItem.minH"
+      :gs-max-w="savedItem.maxW"
+      :gs-max-h="savedItem.maxH"
+      :gs-w="savedItem.w"
+      :gs-h="savedItem.h"
+      :gs-x="savedItem.x"
+      :gs-y="savedItem.y"
+      :draggable="editMode">
+      <div class="grid-stack-item-content">
+        <div v-if="!getComponentById(savedItem.id)">
+          <Icon name="carbon:rotate" size="24" />
+        </div>
+        <component :is="getComponentById(savedItem.id)" :id="savedItem.id" />
+      </div>
+    </div>
+  </div>
+  <div class="trash" :class="{ 'trash--show': showTrash }">
+    <Icon name="carbon:trash-can" size="32" />
+  </div>
+</template>
+<script setup lang="ts">
+
+const { getComponentById } = useDashey()
+const { save, saved } = useStore()
+const { init, editMode } = useGrid()
+const showTrash = ref(false)
+let grid: any = null
+
+watch(editMode, () => {
+  if (editMode.value) {
+    grid.enable()
+  } else {
+    grid.disable()
+  }
+})
+
+onMounted(() => {
+  grid = init({
+    animate: false,
+    acceptWidgets: true,
+    float: true,
+    column: 8,
+    cellHeight: '120px',
+    dragIn: '.grid-stack-item',
+    dragInOptions: { helper: 'clone' },
+    removable: '.trash',
+    styleInHead: true,
+    alwaysShowResizeHandle: true
+  })
+
+  grid.on('change', async () => {
+    const gridItems = await grid.save()
+    await save(gridItems)
+  })
+
+  grid.on('added', async () => {
+    showTrash.value = false
+    const gridItems = await grid.save()
+    await save(gridItems)
+  })
+
+  grid.on('dragstart', () => {
+    showTrash.value = true
+  })
+  grid.on('dragstop', async () => {
+    showTrash.value = false
+    const items = await grid.save()
+    await save(items)
+  })
+})
+
+</script>
+<style lang="scss" scoped>
+.grid-stack {
+  height: 100vh;
+}
+
+.grid-stack>.grid-stack-item>.grid-stack-item-content {
+  container: grid-item / inline-size;
+  overflow: hidden;
+  box-sizing: padding-box;
+
+}
+
+.grid-stack-item-removing {
+  filter: grayscale(1);
+  transform: scale(0.8);
+}
+
+.toolbar {
+  background-color: var(--white);
+  display: flex;
+  gap: var(--spacing);
+  padding: var(--spacing);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: auto;
+  overflow-x: hidden;
+  z-index: 2;
+  transform: translateY(-100%);
+  transition: transform 1s ease;
+
+  &__inner {
+    display: flex;
+    gap: var(--spacing);
+
+    &>* {
+
+      width: calc(100vw / 12);
+    }
+
+    .grid-stack-item-content {
+      height: 100%;
+    }
+  }
+
+  &--show {
+    transform: translateY(0);
+  }
+
+}
+
+.trash {
+  background-color: var(--red-200);
+  color: var(--red-500);
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: var(--spacing-l);
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  transform: translateY(150%);
+  transition: transform 1s ease;
+
+  &--show {
+    transform: translateY(0)
+  }
+}
+</style>
