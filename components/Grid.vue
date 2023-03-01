@@ -1,7 +1,7 @@
 <template>
-  <div class="grid-stack">
+  <div ref="gridEl" class="grid-stack">
     <div
-      v-for="savedItem in saved"
+      v-for="savedItem in itemsForGrid(id)"
       :id="savedItem.id"
       :key="savedItem.id"
       class="grid-stack-item ui-resizable"
@@ -23,17 +23,21 @@
       </div>
     </div>
   </div>
-  <div class="trash" :class="{ 'trash--show': showTrash }">
+  <div class="trash" :class="[ {'trash--show': showTrash}, 'trash-' + id ]">
     <Icon name="carbon:trash-can" size="32" />
   </div>
 </template>
 <script setup lang="ts">
-
 const { getComponentById } = useDashey()
-const { save, saved } = useStore()
+const { save, itemsForGrid } = useGridStore()
 const { init, editMode } = useGrid()
 const showTrash = ref(false)
+const gridEl = ref(null)
 let grid: any = null
+
+const props = defineProps<{
+  id: Number
+}>()
 
 watch(editMode, () => {
   if (editMode.value) {
@@ -45,6 +49,7 @@ watch(editMode, () => {
 
 onMounted(() => {
   grid = init({
+    class: 'grid-' + props.id,
     animate: false,
     acceptWidgets: true,
     float: true,
@@ -52,20 +57,20 @@ onMounted(() => {
     cellHeight: '120px',
     dragIn: '.grid-stack-item',
     dragInOptions: { helper: 'clone' },
-    removable: '.trash',
+    removable: '.trash-' + props.id,
     styleInHead: true,
     alwaysShowResizeHandle: true
-  })
+  }, gridEl.value)
 
   grid.on('change', async () => {
     const gridItems = await grid.save()
-    await save(gridItems)
+    await save(gridItems, props.id)
   })
 
   grid.on('added', async () => {
     showTrash.value = false
     const gridItems = await grid.save()
-    await save(gridItems)
+    await save(gridItems, props.id)
   })
 
   grid.on('dragstart', () => {
@@ -74,7 +79,7 @@ onMounted(() => {
   grid.on('dragstop', async () => {
     showTrash.value = false
     const items = await grid.save()
-    await save(items)
+    await save(items, props.id)
   })
 })
 
@@ -138,13 +143,14 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
+  position: absolute;
   bottom: var(--spacing-l);
   left: 50%;
   width: 80px;
   height: 80px;
   transform: translateY(150%);
   transition: transform 1s ease;
+  z-index: 100;
 
   &--show {
     transform: translateY(0)

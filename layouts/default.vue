@@ -1,5 +1,5 @@
 <template>
   <Navigation />
   <slot />
-  <Screensaver />
+  <!-- <Screensaver /> -->
 </template>

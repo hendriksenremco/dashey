@@ -28,8 +28,8 @@
 </template>
 <script setup lang="ts">
 const { plugins, things } = useDashey()
-const { add } = useStore()
-const { rerender } = useGrid()
+const { add } = useGridStore()
+const { rerender, activeGrid } = useGrid()
 const selectedPlugin: Ref<DasheyPlugin | null> = ref(null)
 const filteredThings = computed(() => {
   return things.filter(things => {
@@ -39,6 +39,7 @@ const filteredThings = computed(() => {
 })
 
 const addThing = async thing => {
+  thing.gridId = activeGrid.value
   add(thing)
   await rerender()
 }

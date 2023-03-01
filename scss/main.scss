@@ -52,14 +52,13 @@ body {
 
 html,
 body,
-#__nuxt {
+#__app {
     height: 100%;
 }
 
-#__nuxt {
-
+#__app {
     margin: auto;
-
+    overflow: hidden;
 }
 
 .ui-resizable-handle {

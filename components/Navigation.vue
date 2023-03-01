@@ -1,26 +1,25 @@
 <template>
   <nav :class="$style['toolbar']">
     <div :class="$style['toolbar__inner']">
-      <NuxtLink :to="{name: 'index'}" :active-class="$style['toolbar__item--active']" :class="[$style['toolbar__item']]">
-        Home
-      </NuxtLink>
-      <div :class="$style['toolbar__item']">
-        Lampen
+      <div v-for="page in pages" :key="page.id" :class="[$style['toolbar__item'],{[$style['toolbar__item--active']]: page.id === activeGrid}]">
+        {{ page.name }}
       </div>
-      <div :class="$style['toolbar__item']">
-        Klimaat
-      </div>
-      <div :class="$style['toolbar__item']">
-        Motion
-      </div>
-      <div v-if="editMode" :class="$style['toolbar__item']">
+      <div v-if="editMode" :class="$style['toolbar__item']" @click="add">
         <Icon name="carbon:add" size="24" />
       </div>
     </div>
   </nav>
 </template>
 <script setup>
-const { editMode } = useGrid()
+const { editMode, activeGrid } = useGrid()
+const { addPage, pages } = usePages()
+
+const add = () => {
+  const text = prompt('Scherm naam?')
+  if (text) {
+    addPage({ name: text })
+  }
+}
 </script>
 <style lang="scss" module>
 .toolbar {

@@ -1,19 +1,21 @@
 <template>
-  <Modal v-if="showModal" title="Ding toevoegen" @closed="showModal = false">
-    <AddPlugin />
-  </Modal>
-  <div :class="$style['tools']">
-    <NuxtLink v-if="editMode" :to="{name: 'settings'}" :active-class="$style['toolbar__item--active']" :class="$style['toolbar__item']">
-      <Button :round="true">
-        <Icon name="carbon:settings" size="24" />
+  <div>
+    <Modal v-if="showModal" title="Ding toevoegen" @closed="showModal = false">
+      <AddPlugin />
+    </Modal>
+    <div :class="$style['tools']">
+      <NuxtLink v-if="editMode" :to="{name: 'settings'}" :active-class="$style['toolbar__item--active']" :class="$style['toolbar__item']">
+        <Button :round="true">
+          <Icon name="carbon:settings" size="24" />
+        </Button>
+      </NuxtLink>
+      <Button v-if="editMode" :class="$style['tools__item']" :round="true" @click="showModal = true">
+        <Icon size="24" name="carbon:add" />
       </Button>
-    </NuxtLink>
-    <Button v-if="editMode" :class="$style['tools__item']" :round="true" @click="showModal = true">
-      <Icon size="24" name="carbon:add" />
-    </Button>
-    <Button :class="$style['tools__item']" :round="true" @click="editMode = !editMode">
-      <Icon size="24" :name="!editMode ?'carbon:pen': 'carbon:checkmark'" />
-    </Button>
+      <Button :class="$style['tools__item']" :round="true" @click="editMode = !editMode">
+        <Icon size="24" :name="!editMode ?'carbon:pen': 'carbon:checkmark'" />
+      </Button>
+    </div>
   </div>
 </template>
 <script setup>
