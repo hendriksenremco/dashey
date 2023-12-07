@@ -41,6 +41,7 @@ defineProps<{
   align-items: center;
   padding: var(--spacing);
   user-select: none;
+  container: thing / inline-size;
 
   &--no-padding {
     padding: 0;

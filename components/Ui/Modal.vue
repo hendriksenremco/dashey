@@ -1,11 +1,11 @@
 <template>
-  <div :class="$style['modal']">
+  <div :class="[$style['modal'], {[$style['modal--with-padding']]: padding}]">
     <div :class="$style['modal__backdrop']" @click="$emit('closed')" />
     <div :class="$style['modal__content']">
       <div :class="$style['modal__title']">
         {{ title }}
-        <Button :round="true">
-          <Icon size="24" name="carbon:close" @click="$emit('closed')" />
+        <Button round @click="$emit('closed')">
+          <Icon size="24" name="carbon:close" />
         </Button>
       </div>
       <div :class="$style['modal__body']">
@@ -17,7 +17,8 @@
 <script setup lang="ts">
 defineEmits(['closed'])
 defineProps<{
-    title?: String,
+    title?: string,
+    padding: boolean
 }>()
 </script>
 <style lang="scss" module>
@@ -32,6 +33,12 @@ defineProps<{
   bottom: 0;
   z-index: 1;
 
+  &--with-padding {
+    .modal__body {
+      padding: var(--spacing-l);
+    }
+  }
+
   &__backdrop {
     background-color: rgba(0, 0, 0, .2);
     backdrop-filter: blur(2px);
@@ -44,23 +51,23 @@ defineProps<{
   }
 
   &__content {
-    background-color: var(--grey-800);
+    background-color: var(--grey-700);
     border-radius: var(--thing-radius);
     box-shadow: 0px 10px 20px rgba(0, 0, 0, .2);
     position: relative;
     z-index: 2;
-    height: 100%;
-    min-height: 800px;
-    min-width: 1000px;
+    height: 800px;
+    width: 1000px;
     max-height: 70vh;
     max-width: 90vw;
     padding-top: 54px;
   }
 
   &__title {
-    border-bottom: 1px solid var(--grey-700);
+    border-bottom: 1px solid var(--grey-600);
     display: flex;
     align-items: center;
+    font-size: 1.8rem;
     justify-content: space-between;
     padding: var(--spacing-l);
     height: 54px;

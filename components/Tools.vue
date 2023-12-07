@@ -12,8 +12,11 @@
       <Button v-if="editMode" :class="$style['tools__item']" :round="true" @click="showModal = true">
         <Icon size="24" name="carbon:add" />
       </Button>
-      <Button :class="$style['tools__item']" :round="true" @click="editMode = !editMode">
-        <Icon size="24" :name="!editMode ?'carbon:pen': 'carbon:checkmark'" />
+      <Button v-if="!editMode" :class="$style['tools__item']" icon-right="carbon:pen" @click="editMode = !editMode">
+        Bewerk
+      </Button>
+      <Button v-else :round="true" :class="$style['tools__item']" @click="editMode = !editMode">
+        <Icon size="24" name="carbon:checkmark" />
       </Button>
     </div>
   </div>
@@ -24,16 +27,16 @@ const showModal = ref(false)
 </script>
 <style lang="scss" module>
 .tools {
-  cursor: pointer;
-  align-items: center;
-  display: inline-flex;
-  margin: 0 auto;
-  padding: calc(var(--spacing) * 1.5);
-  gap: var(--spacing);
-  position: fixed;
-  right: var(--spacing-l);
-  bottom: var(--spacing-l);
+    cursor: pointer;
+    align-items: center;
+    display: inline-flex;
+    margin: 0 auto;
+    padding: calc(var(--spacing) * 1.5);
+    gap: var(--spacing);
+    position: fixed;
+    right: var(--spacing-l);
+    bottom: var(--spacing-l);
 
-  &__item {}
+    &__item {}
 }
 </style>

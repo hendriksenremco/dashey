@@ -32,12 +32,15 @@ onMounted(() => {
 })
 </script>
 <style lang="scss" module>
+@import "@/scss/mixins";
+
 .pages {
+  @include scrollbar;
   display: flex;
   flex-direction: row;
   width: 100vw;
-  height: 100vh;
-  overflow-y: hidden;
+  height: calc(100vh - 16px);
+  overflow-y: auto;
   overflow-x: scroll;
   scroll-snap-type: x mandatory;
   scroll-snap-stop: always;
@@ -45,7 +48,7 @@ onMounted(() => {
 
 .page {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   flex: 0 0 100vw;
   scroll-snap-align: start;
 }

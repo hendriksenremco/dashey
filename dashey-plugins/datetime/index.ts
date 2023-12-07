@@ -38,6 +38,17 @@ export const datetimePlugin = (): DasheyPlugin => {
       maxHeight: 2,
       component: markRaw(defineAsyncComponent(() => import('./components/DateTime.vue')))
     })
+    addThing({
+      id: 'analog-clock',
+      pluginId,
+      name: 'Analoge klok',
+      categories: ['tijd', 'datum'],
+      minWidth: 1,
+      minHeight: 2,
+      maxWidth: 4,
+      maxHeight: 6,
+      component: markRaw(defineAsyncComponent(() => import('./components/Analog.vue')))
+    })
   }
   return { initialize, name, id: pluginId, icon }
 }

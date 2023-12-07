@@ -3,13 +3,13 @@ html {
 }
 
 body {
-    background: white;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.5rem;
     font-weight: 400;
     line-height: 1.75;
-    color: #000000;
+    text-rendering: geometricPrecision;
 }
+
 
 p {
     margin-bottom: 1rem;

@@ -67,7 +67,7 @@ const addThing = async thing => {
     padding: var(--spacing-l);
 
     &__item {
-      background-color: var(--grey-700);
+      background-color: var(--grey-600);
       border-radius: var(--thing-radius);
       cursor: pointer;
       display: flex;
@@ -76,7 +76,7 @@ const addThing = async thing => {
       padding: var(--spacing-l);
 
       &:hover:not(.add-plugin__sidebar__item--active) {
-        background-color: var(--grey-600);
+        background-color: var(--grey-500);
         color: var(--white);
       }
 

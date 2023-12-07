@@ -22,9 +22,9 @@
         <component :is="getComponentById(savedItem.id)" :id="savedItem.id" />
       </div>
     </div>
-  </div>
-  <div class="trash" :class="[ {'trash--show': showTrash}, 'trash-' + id ]">
-    <Icon name="carbon:trash-can" size="32" />
+    <div class="trash" :class="[ {'trash--show': showTrash}, 'trash-' + id ]">
+      <Icon name="carbon:trash-can" size="32" />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -86,7 +86,7 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .grid-stack {
-  height: 100vh;
+  height: 100%;
 }
 
 .grid-stack>.grid-stack-item>.grid-stack-item-content {
@@ -144,7 +144,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: var(--spacing-l);
+  bottom: var(--spacing-xl);
   left: 50%;
   width: 80px;
   height: 80px;
